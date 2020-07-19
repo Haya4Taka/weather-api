@@ -1,0 +1,39 @@
+#For local development
+version: "3.7"
+services:
+  web_flask:
+    build:
+      context: .
+      dockerfile: ./deploy/app/Dockerfile
+
+    networks:
+      nginx_network:
+        aliases:
+          - flask
+
+    expose:
+      - 8000
+
+    env_file:
+      - ./test_db_conf
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./deploy/nginx/Dockerfile
+
+    depends_on:
+      - web_flask
+
+    networks:
+      - nginx_network
+
+    ports:
+      - 8080:80
+
+    environment:
+      - HOST=flask
+
+networks:
+  nginx_network:
+    driver: bridge
