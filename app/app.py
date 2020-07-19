@@ -21,6 +21,9 @@ schema = {
 def hourly_climates():
     try:
         city = request.args['city']
+        range_h = int(request.args.get('range', 12))
+        if not 0 < range_h <= 12:
+            return jsonify({"BadRequest": "Invalid Parameter"}), 400
         city_id = schema[city]
     except KeyError:
         return jsonify({"BadRequest": "Invalid Parameter"}), 400
@@ -28,7 +31,7 @@ def hourly_climates():
     try:
         with context.db_connection() as connection:
             cursor = connection.cursor(dictionary=True)
-            data = query.get_hourly_climate(cursor, city_id)
+            data = query.get_hourly_climate(cursor, city_id, range_d)
     except Exception:
         return jsonify({"InternalServerError": "Internal Server Error occurred"}), 500
 
@@ -39,6 +42,9 @@ def hourly_climates():
 def daily_climates():
     try:
         city = request.args['city']
+        range_d = int(request.args.get('range', 7))
+        if not 0 < range_d <= 7:
+            return jsonify({"BadRequest": "Invalid Parameter"}), 400
         city_id = schema[city]
     except KeyError:
         return jsonify({"BadRequest": "Invalid Parameter"}), 400
@@ -46,7 +52,7 @@ def daily_climates():
     try:
         with context.db_connection() as connection:
             cursor = connection.cursor(dictionary=True)
-            data = query.get_daily_climate(cursor, city_id)
+            data = query.get_daily_climate(cursor, city_id, range_d)
     except Exception:
         return jsonify({"InternalServerError": "Internal Server Error occurred"}), 500
 
