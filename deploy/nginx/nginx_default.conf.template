@@ -1,0 +1,25 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    access_log /var/log/nginx/access.log main;
+
+    location / {
+        try_files $uri @flask;
+    }
+
+    location /health {
+        default_type application/json;
+        return 200 '{"health_check": "ok"}';
+    }
+
+    location @flask {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_redirect off;
+
+        proxy_pass http://$HOST:8000;
+    }
+
+
+}
