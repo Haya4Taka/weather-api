@@ -31,7 +31,7 @@ def hourly_climates():
     try:
         with context.db_connection() as connection:
             cursor = connection.cursor(dictionary=True)
-            data = query.get_hourly_climate(cursor, city_id, range_d)
+            data = query.get_hourly_climate(cursor, city_id, range_h)
     except Exception:
         return jsonify({"InternalServerError": "Internal Server Error occurred"}), 500
 
