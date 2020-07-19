@@ -32,11 +32,13 @@ docker compose up -d
 daily data
 ```
 curl -s http://<hostname>:80/daily?city=tokyo
+curl -s http://<hostname>:80/daily?city=tokyo\&range=6 # 現時刻から６時間先まで
 ```
 
 hourly data
 ```
 curl -s http://<hostname>:80/hourly?city=tokyo
+curl -s http://<hostname>:80/hourly?city=tokyo\&range=3 # 本日から３日先まで
 ```
 
 docker-compose環境
@@ -49,6 +51,10 @@ curl localhost:8080/daily?city=tokyo
 * osaka
 * nagoya
 * fukuoka
+
+時間指定の範囲
+* hourly：1~12
+* daily：1~7
 
 公開エンドポイントへのリクエスト
 ```
