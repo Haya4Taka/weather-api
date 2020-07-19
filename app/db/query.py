@@ -4,8 +4,9 @@ def get_hourly_climate(cursor, city_id, hours):
     stmt = (f'SELECT datetime, weather, weather_description, temp, humidity, pressure '
             f'FROM weather_hourly WHERE city_id = {city_id}')
     cursor.execute(stmt)
-    result = cursor.fetchmany(size=hours)
-    return result
+    rows = cursor.fetchmany(size=hours)
+    column_name = [cursor.column_names]
+    return column_name + rows
 
 
 def get_daily_climate(cursor, city_id, days):
@@ -14,6 +15,7 @@ def get_daily_climate(cursor, city_id, days):
     stmt = (f'SELECT datetime, weather, weather_description, temp, humidity, pressure '
             f'FROM weather_daily WHERE city_id = {city_id}')
     cursor.execute(stmt)
-    result = cursor.fetchmany(size=days)
-    return result
+    rows = cursor.fetchmany(size=days)
+    column_name = [cursor.column_names]
+    return column_name + rows
 
